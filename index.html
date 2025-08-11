@@ -1,0 +1,77 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Psychometric Test - Excel Engineering College</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style> body{font-family:'Inter',sans-serif} .custom-radio{appearance:none;width:1.1rem;height:1.1rem;border-radius:9999px;border:2px solid #cbd5e1;} .custom-radio:checked{background:#4f46e5;border-color:#4f46e5;} </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-4xl mx-auto p-6">
+    <header class="text-center mb-6">
+      <h1 class="text-3xl font-bold">Psychometric Test</h1>
+      <p class="text-gray-600">Navigating the Interview and Accelerating the Success</p>
+    </header>
+
+    <form id="testForm" method="post" action="/submit" class="bg-white p-6 rounded-lg shadow">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-sm font-medium">Full Name</label>
+          <input name="studentName" required class="w-full border px-3 py-2 rounded" />
+        </div>
+        <div>
+          <label class="text-sm font-medium">Roll Number</label>
+          <input name="rollNumber" required class="w-full border px-3 py-2 rounded" />
+        </div>
+        <div>
+          <label class="text-sm font-medium">Department</label>
+          <input name="department" required class="w-full border px-3 py-2 rounded" />
+        </div>
+        <div>
+          <label class="text-sm font-medium">Class / Section</label>
+          <input name="classSection" required class="w-full border px-3 py-2 rounded" />
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-sm font-medium">Email</label>
+          <input name="studentEmail" type="email" required class="w-full border px-3 py-2 rounded" />
+        </div>
+      </div>
+
+      <div id="questionsArea" class="space-y-6">
+        {% set qnum = 1 %}
+        {% for q in likert_questions %}
+          <div class="p-4 bg-gray-50 rounded border">
+            <p class="font-medium mb-2">{{ qnum }}. {{ q }}</p>
+            <div class="flex gap-3 flex-wrap">
+              <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ qnum }}" value="5" required><span>Strongly Agree</span></label>
+              <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ qnum }}" value="4"><span>Agree</span></label>
+              <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ qnum }}" value="3"><span>Neutral</span></label>
+              <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ qnum }}" value="2"><span>Disagree</span></label>
+              <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ qnum }}" value="1"><span>Strongly Disagree</span></label>
+            </div>
+          </div>
+          {% set qnum = qnum + 1 %}
+        {% endfor %}
+
+        {% for i in range(1,11) %}
+          <div class="p-4 bg-gray-50 rounded border">
+            <p class="font-medium mb-2">{{ 40+i }}. {{ mcq_questions[i-1][0] }}</p>
+            <div class="flex flex-col gap-2">
+              {% for opt in mcq_questions[i-1][1] %}
+                <label class="flex items-center space-x-2"><input class="custom-radio" type="radio" name="q{{ 40+i }}" value="{{ opt[0] }}" required><span>{{ opt }}</span></label>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="text-center mt-6">
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded font-semibold">Submit & Download Student Report</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

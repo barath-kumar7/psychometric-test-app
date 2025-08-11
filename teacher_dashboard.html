@@ -1,0 +1,52 @@
+
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Teacher Dashboard</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="p-6 font-sans bg-gray-50">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h1 class="text-2xl font-bold">Teacher Dashboard</h1>
+      <div>
+        <a href="{{ url_for('teacher_download_csv') }}" class="mr-3 bg-green-600 text-white px-3 py-2 rounded">Download CSV</a>
+        <a href="{{ url_for('teacher_logout') }}" class="bg-red-600 text-white px-3 py-2 rounded">Logout</a>
+      </div>
+    </div>
+
+    <h2 class="font-semibold mb-2">Saved Teacher Reports</h2>
+    <ul class="space-y-2">
+      {% for p in reports %}
+        <li class="bg-white p-3 rounded shadow flex justify-between items-center">
+          <span>{{ p.name }}</span>
+          <a href="{{ url_for('teacher_download', filename=p.name) }}" class="bg-indigo-600 text-white px-3 py-1 rounded">Download</a>
+        </li>
+      {% else %}
+        <li class="text-gray-500">No reports yet.</li>
+      {% endfor %}
+    </ul>
+
+    <h2 class="mt-6 font-semibold">Recent Submissions (preview)</h2>
+    <div class="overflow-auto mt-2">
+      <table class="w-full bg-white rounded">
+        <thead class="bg-gray-100">
+          <tr>
+            {% if recent and recent[0] %}
+              {% for h in range(0, recent[0]|length) %}
+                <th class="p-2 text-left">Col {{ h+1 }}</th>
+              {% endfor %}
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in recent %}
+            <tr>
+              {% for col in row %}
+                <td class="p-2 border-t text-sm">{{ col }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
